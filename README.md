@@ -6,6 +6,11 @@
 
 MHPatches is a plugin that brings some of PS2 features of Manhunt to the PC.
 
+# Requirements
+
+* UAL (https://github.com/ThirteenAG/Ultimate-ASI-Loader)
+* debugmenu.dll (optional) (https://github.com/Fire-Head/debugmenu_mh)
+
 # Dual pass 
 
 Dual pass in short is a thing that emulates PS2 method of alpha rendering which is much better than what we have on PC and XBOX. In fact all rockstar PC\Xbox ports on RW engine have this problem. You probably saw this feature in SkyGfx if you are interested in GTA modding. If you want to know more about this you can read well written [article](http://gta.rockstarvision.com/skygfx/skygfx.html#SAatest) by aap, the creator of SkyGfx. 
