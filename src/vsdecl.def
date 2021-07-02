@@ -1,0 +1,23 @@
+{
+    D3DVSD_STREAM(0),
+    D3DVSD_REG(0, D3DVSDT_FLOAT3),   /* D3DFVF_XYZ     - register v0 */
+#ifdef WITHNORMAL
+    D3DVSD_REG(1, D3DVSDT_FLOAT3),   /* D3DFVF_NORMAL  - register v1 */
+#endif
+#ifdef WITHDIFFUSE
+	D3DVSD_REG(2, D3DVSDT_D3DCOLOR), /* D3DFVF_DIFFUSE - register v2 */
+#endif
+	D3DVSD_REG(3, D3DVSDT_FLOAT2),   /* D3DFVF_TEX1    - register v3 */
+#if 0
+	D3DVSD_REG(4, D3DVSDT_FLOAT2),   /* D3DFVF_TEX2    - register v4 */
+	D3DVSD_REG(5, D3DVSDT_FLOAT2),   /* D3DFVF_TEX3    - register v5 */
+	D3DVSD_REG(6, D3DVSDT_FLOAT2),   /* D3DFVF_TEX4    - register v6 */
+	D3DVSD_REG(7, D3DVSDT_FLOAT2),   /* D3DFVF_TEX5    - register v7 */
+	D3DVSD_REG(8, D3DVSDT_FLOAT2),   /* D3DFVF_TEX6    - register v8 */
+	D3DVSD_REG(9, D3DVSDT_FLOAT2),   /* D3DFVF_TEX7    - register v9 */
+	D3DVSD_REG(10, D3DVSDT_FLOAT2),  /* D3DFVF_TEX8    - register v10 */
+	D3DVSD_REG(11, D3DVSDT_FLOAT3),  /* D3DFVF_XYZ1    - register v11 */
+	D3DVSD_REG(12, D3DVSDT_FLOAT3),  /* D3DFVF_NORMAL1 - register v12 */
+#endif
+    D3DVSD_END()
+}

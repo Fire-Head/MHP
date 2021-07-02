@@ -1,0 +1,16 @@
+    ps.1.3
+    def c0, 0.112001002, -0.212025002, -0.0411759987, 0
+    def c1, -0.107998997, 0.0079760002, -0.0411770009, 0
+    def c2, 0, 1, 0, 0
+    def c3, -0.107998997, -0.212042004, 0.178822994, 0
+    def c4, 0, 0, 1, 0
+    tex t0
+    dp3 r0.xyz, c0, t0
+    add_sat r0.xyz, t0, r0
+    dp3 r1.xyz, c1, t0
+    add_sat r1.xyz, t0, r1
+    lrp r0.xyz, c2, r1, r0
+    dp3 r1.xyz, c3, t0
+    add_sat r1.xyz, t0, r1
+    lrp r0.xyz, c4, r1, r0
+  + mov r0.w, v0.w
