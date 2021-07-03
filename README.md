@@ -84,8 +84,8 @@ Demonstation:
 ![YCbCr](https://user-images.githubusercontent.com/26774830/124336715-b9e8df80-dba7-11eb-8892-df77bc8e73bb.gif)
 
 
-
-
+# Special Thanks
+* aap - for providing his amazing PS2 EnvMap pipeline and helping with PS2 RenderWare research. 
 
 
 
