@@ -6,6 +6,7 @@
 
 MHPatches is a plugin that brings some of PS2 features of Manhunt to the PC.
 
+
 # Requirements
 
 * UAL (https://github.com/ThirteenAG/Ultimate-ASI-Loader)
@@ -86,7 +87,7 @@ Demonstation:
 
 # Special Thanks
 * aap - for providing his PS2 EnvMap pipeline and helping with PS2 RenderWare research.
-
+* ermaccer - for making [video](https://www.youtube.com/watch?v=C8XR1K14h8A) about the plugin.
 
 
 
