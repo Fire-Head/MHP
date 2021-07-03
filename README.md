@@ -10,6 +10,7 @@ MHPatches is a plugin that brings some of PS2 features of Manhunt to the PC.
 
 * UAL (https://github.com/ThirteenAG/Ultimate-ASI-Loader)
 * debugmenu.dll (optional) (https://github.com/Fire-Head/debugmenu_mh)
+* models with fixed alpha (optional) (see "Releases" section)
 
 # Dual pass 
 
