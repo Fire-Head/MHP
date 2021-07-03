@@ -85,7 +85,7 @@ Demonstation:
 
 
 # Special Thanks
-* aap - for providing his amazing PS2 EnvMap pipeline and helping with PS2 RenderWare research. 
+* aap - for providing his PS2 EnvMap pipeline and helping with PS2 RenderWare research.
 
 
 
