@@ -68,7 +68,7 @@ The problem is also present on Xbox, PS2 is the only platform on which it works 
 
 ![Lighting and vertex alpha fix](https://user-images.githubusercontent.com/26774830/124336620-61194700-dba7-11eb-9ca4-a5b9c68e0489.png)
 
-Hardware T&L implementation is different from DirectX standard on NVidia cards, as result spotlights are brighter then they should be.
+Hardware T&L implementation is different from DirectX standard on NVidia cards, as result spotlights are brighter than they should be.
 The plugin replaces this light type with ATI's formula which is equivalent to PS2.
 
 ![spotlight](https://user-images.githubusercontent.com/26774830/124336705-adfd1d80-dba7-11eb-8a84-441dd5754568.gif)
