@@ -1,15 +1,21 @@
 #include "common.h"
 #include "settings.h"
-#include "rwim2d.h"
+#include "game.h"
+#include "render\helpers.h"
+#include "render\im2d.h"
 #include "ColorFilter.h"
+#include "CPatch.h"
 
 #define  dwPixelShader dwYCbCrPixelShader
-#include "shaders\YCbCr.h"
+#include "render\shaders\YCbCr.h"
 #undef   dwPixelShader
 
 #define  dwPixelShader dwDebugPixelShader
-#include "shaders\debugPS.h"
+#include "render\shaders\debugPS.h"
 #undef   dwPixelShader
+
+RwUInt32  ColorFilter::PS;
+RwUInt32  ColorFilter::debugPS;
 
 ColorFilter *ColorFilter::GetInstance()
 {
@@ -57,19 +63,19 @@ ColorFilter::Shutdown()
 void
 ColorFilter::CreateImmediateModeData(RwCamera *camera, RwRect *rect)
 {
-	RwReal w = rect->w;
-	RwReal h = rect->h;
+	RwReal w = RwReal(rect->w);
+	RwReal h = RwReal(rect->h);
 	RwReal U, V, u, v;
 	RwUInt32 xSize, ySize;
-	
+
 	xSize = RwRasterGetWidth(pFrontBuffer);
 	ySize = RwRasterGetHeight(pFrontBuffer);
-	
+
 	U = (w + 0.5f) / xSize;
 	V = (h + 0.5f) / ySize;
 	u =     (0.5f) / xSize;
 	v =     (0.5f) / ySize;
-	
+
 	RwIm2DVertexSetScreenX(&Vertex[0], 0.0f);
 	RwIm2DVertexSetScreenY(&Vertex[0], 0.0f);
 	RwIm2DVertexSetScreenZ(&Vertex[0], RwIm2DGetNearScreenZ());
@@ -78,7 +84,7 @@ ColorFilter::CreateImmediateModeData(RwCamera *camera, RwRect *rect)
 	RwIm2DVertexSetU(&Vertex[0], u, 1.0f);
 	RwIm2DVertexSetV(&Vertex[0], v, 1.0f);
 	RwIm2DVertexSetIntRGBA(&Vertex[0], 255, 255, 255, 255);
-	
+
 	RwIm2DVertexSetScreenX(&Vertex[1], 0.0f);
 	RwIm2DVertexSetScreenY(&Vertex[1], (RwReal)RwCameraGetRaster(camera)->height);
 	RwIm2DVertexSetScreenZ(&Vertex[1], RwIm2DGetNearScreenZ());
@@ -87,7 +93,7 @@ ColorFilter::CreateImmediateModeData(RwCamera *camera, RwRect *rect)
 	RwIm2DVertexSetU(&Vertex[1], u, 1.0f);
 	RwIm2DVertexSetV(&Vertex[1], V, 1.0f);
 	RwIm2DVertexSetIntRGBA(&Vertex[1], 255, 255, 255, 255);
-	
+
 	RwIm2DVertexSetScreenX(&Vertex[2], (RwReal)RwCameraGetRaster(camera)->width);
 	RwIm2DVertexSetScreenY(&Vertex[2], (RwReal)RwCameraGetRaster(camera)->height);
 	RwIm2DVertexSetScreenZ(&Vertex[2], RwIm2DGetNearScreenZ());
@@ -96,7 +102,7 @@ ColorFilter::CreateImmediateModeData(RwCamera *camera, RwRect *rect)
 	RwIm2DVertexSetU(&Vertex[2], U, 1.0f);
 	RwIm2DVertexSetV(&Vertex[2], V, 1.0f);
 	RwIm2DVertexSetIntRGBA(&Vertex[2], 255, 255, 255, 255);
-	
+
 	RwIm2DVertexSetScreenX(&Vertex[3], (RwReal)RwCameraGetRaster(camera)->width);
 	RwIm2DVertexSetScreenY(&Vertex[3], 0.0f);
 	RwIm2DVertexSetScreenZ(&Vertex[3], RwIm2DGetNearScreenZ());
@@ -131,7 +137,7 @@ ColorFilter::OverlayRender(RwCamera *camera, bool reset)
 	CreateImmediateModeData(camera, &rect);
 
 	Im2D *im2d = Im2D::GetInstance();
-	
+
 	if ( !reset )
 	{
 #ifdef DEVBUILD
@@ -157,11 +163,11 @@ void
 ColorFilter::Open(RwCamera *camera)
 {
 	RwUInt32 width, height, depth;
-	
+
 	width = RwRasterGetWidth(RwCameraGetRaster(camera));
 	height = RwRasterGetHeight(RwCameraGetRaster(camera));
 	depth = RwRasterGetDepth(RwCameraGetRaster(camera));
-	
+
 	pFrontBuffer = RwRasterCreate(width, height, depth, rwRASTERTYPECAMERATEXTURE);
 }
 
@@ -186,10 +192,55 @@ ColorFilter::Render(RwCamera *camera, bool reset)
 
 	if ( RwCameraBeginUpdate(camera) )
 	{
-		((void (__cdecl *)(long))0x5F5A80)(0);
+		CRenderer::SetIngameInfoRenderStates(0);
 		OverlayRender(camera, reset);
-		((void (__cdecl *)(long))0x5F5A80)(1);
+		CRenderer::SetIngameInfoRenderStates(1);
 
 		RwCameraEndUpdate(camera);
 	}
 }
+
+static RwCamera *(*CreateCameraCB)(RwUInt32, RwUInt32, RwUInt32);
+RwCamera *CreateCamera(RwUInt32 w, RwUInt32 h, RwUInt32 c)
+{
+	RwCamera *result = CreateCameraCB(w, h, c);
+	ColorFilter::GetInstance()->Open(result);
+	return result;
+}
+
+static void (__thiscall *DestroyCameraCB)(void*);
+void __fastcall DestroyCamera(void *This)
+{
+	ColorFilter::GetInstance()->Close();
+	DestroyCameraCB(This);
+}
+
+static void (__thiscall *ShowRasterCB)(void*, RwCamera *);
+void __fastcall ShowRaster(void *This, int edx0, RwCamera *camera)
+{
+	ColorFilter::GetInstance()->Render(camera, false);
+	ShowRasterCB(This, camera);
+	ColorFilter::GetInstance()->Render(camera, true);
+}
+
+static RwCamera *(*CameraShowRasterCB)(RwCamera *camera, void *dev, RwUInt32 flags);
+RwCamera *CameraShowRaster(RwCamera *camera, void *dev, RwUInt32 flags)
+{
+	ColorFilter::GetInstance()->Render(camera, false);
+	RwCamera *cam = CameraShowRasterCB(camera, dev, flags);
+	ColorFilter::GetInstance()->Render(camera, true);
+	return cam;
+}
+
+STARTPATCH
+	{
+		DBG("colorfilter\n");
+
+		CALL(0x5E2420, CreateCamera, CreateCameraCB);
+		CALL(0x489D55, DestroyCamera, DestroyCameraCB);
+		CALL(0x5934B7, ShowRaster, ShowRasterCB);
+
+		CALL(0x4C0F5B, CameraShowRaster, CameraShowRasterCB);
+		CALL(0x4C1051, CameraShowRaster, CameraShowRasterCB);
+	}
+ENDPATCH

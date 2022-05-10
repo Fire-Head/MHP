@@ -9,12 +9,12 @@ workspace "MHP"
 	location "build"
 
 	files { addSrcFiles("src") }
-	files { addSrcFiles("src/rw") }
-	files { addSrcFiles("src/shaders") }
+	files { addSrcFiles("src/manhunt") }
+	files { addSrcFiles("src/render") }
+	files { addSrcFiles("src/render/rw") }
 	
 	includedirs { "src" }
-	includedirs { "src/rw" }
-	includedirs { "src/shaders" }
+	includedirs { "src/manhunt" }
 	includedirs { "inc" }
 
 project "MHP"

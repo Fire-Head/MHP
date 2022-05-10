@@ -1,12 +1,11 @@
 #pragma once
-#include "rw.h"
 
 class ColorFilter
 {
 	RwRaster *pFrontBuffer;
 
-	RwUInt32  PS;
-	RwUInt32  debugPS;
+	static RwUInt32  PS;
+	static RwUInt32  debugPS;
 
 	RwIm2DVertex    Vertex[4];
 	RwImVertexIndex Index[6];

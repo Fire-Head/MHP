@@ -1,0 +1,8 @@
+    ps.1.3
+    tex t0
+    tex t1
+    mul_x2 r0, t1.w, -t0
+    mul_x2 r1, t1.w, t1
+    add r0, r0, t0
+    add_sat r0, r1, r0
+    mul r0, r0, v0

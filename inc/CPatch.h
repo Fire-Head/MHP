@@ -74,4 +74,27 @@ public:
 	{
 		Patch((void *)address, &value, 4);
 	}
+
+	inline static void Set(int address, void* data, int size)
+	{
+		Patch((void*)address, data, size);
+	}
 };
+
+template<typename T>
+inline static void CALL(int address, void *func, T &CB)
+{
+	if ( *(int*)(address + 1) + (address + 5) != (int)func)
+	{
+		CB = reinterpret_cast <T>(*(int*)(address + 1) + (address + 5));
+		CPatch::RedirectCall(address, func);
+	}
+}
+
+template <typename T>
+inline void *FUNC2PTR(T o)
+{
+	auto member = o;
+	void*& ptr = (void*&)member;
+	return ptr;
+}

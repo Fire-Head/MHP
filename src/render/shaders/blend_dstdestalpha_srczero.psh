@@ -1,0 +1,4 @@
+    ps.1.3
+    tex t0
+    mul_x2_sat r0, t0.w, t0
+    mul r0, r0, v0
