@@ -18,7 +18,7 @@ PS2 Alpha Test in short is a thing that emulates PS2 method of alpha rendering w
 
 ![Dual pass](https://user-images.githubusercontent.com/26774830/124336151-9a50b780-dba5-11eb-8073-83b48e263a0d.png)
 
-# PS2 halos 
+# PS2 Halos 
 
 In general, the pickup consists of three parts:
 
@@ -76,7 +76,7 @@ Note: This option is related to the PS2 player damage.
 ![PS2 Matfx Dual Pass](https://user-images.githubusercontent.com/26774830/167521186-0b7f72c3-51b7-4142-b6b8-731a8725c3c4.png)
 
 
-# PS2 player damage  
+# PS2 Player Damage  
 
 In the PS2 version blood/stamina(sweat on the back of a player when low on stamina)/bruises overlays have much more complex realization. The trick which was used is called [palette swap](https://en.wikipedia.org/wiki/Palette_swap) and allows you to recolor the image with minimal effort and no performance cost. This technique was used for damage parts in the game with one exception, the alpha channel is changed in the palette, each piece of damage is assigned to its own cells in the palette and by editing values of alpha channel on the fly by game code this whole effect is being achieved. On the demonstration GIF you can clearly notice how blood and sweat works separately. It was completely lost in PC and Xbox ports. 
 
