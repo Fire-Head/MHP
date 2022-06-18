@@ -4,7 +4,7 @@
 
 # Intro
 
-MHPatches is a plugin that brings some of PS2 features of Manhunt to the PC.
+MHPatches is a plugin that brings some of PS2 graphics and features of Manhunt to the PC.
 
 
 # Requirements
@@ -45,10 +45,9 @@ The plugin simply turns off the texture before drawing the wire sphere, which si
 
 ![PS2 Halos](https://user-images.githubusercontent.com/26774830/174457720-e351a7c9-8f32-4835-8307-295000760593.png)
 
-
 # Usable objects highlighting fix 
 
-Story with this thing is pretty short. On PC (and only on PC this time, everything works fine on consoles) light intensity value is always zero, and that's the reason why it didn't work. 
+Story with this thing is pretty short. On PC (and only on PC this time, everything works fine on consoles) light intensity value is always zero, and that's the reason why it didn't work. This fix making it work as intended.
 
 Demonstation: 
 
@@ -77,7 +76,6 @@ Note: This option is related to the PS2 player damage.
 ![PS2 Matfx Dual Pass](https://user-images.githubusercontent.com/26774830/174457748-631b4859-bf44-40cf-b7b5-b84fb5410531.png)
 
 
-
 # PS2 Player Damage  
 
 In the PS2 version blood/stamina(sweat on the back of a player when low on stamina)/bruises overlays have much more complex realization. The trick which was used is called [palette swap](https://en.wikipedia.org/wiki/Palette_swap) and allows you to recolor the image with minimal effort and no performance cost. This technique was used for damage parts in the game with one exception, the alpha channel is changed in the palette, each piece of damage is assigned to its own cells in the palette and by editing values of alpha channel on the fly by game code this whole effect is being achieved. On the demonstration GIF you can clearly notice how blood and sweat works separately. It was completely lost in PC and Xbox ports. 
@@ -96,7 +94,7 @@ Demonstation:
 
 Fixed-pipeline has major issues with drawing vertex color with lighting enabled,
 mesh turns black and doesn't react to any light type except ambient.
-The problem is also present on Xbox, PS2 is the only platform on which it works fine. 
+The problem is also present on Xbox, PS2 is the only platform on which it works as intended.
 
 ![Lighting and vertex alpha fix](https://user-images.githubusercontent.com/26774830/124336620-61194700-dba7-11eb-9ca4-a5b9c68e0489.png)
 
@@ -124,7 +122,7 @@ PS2 port has all time working filter, "trails" like effect (kinda what GTA 3 and
 
 # YCbCr
 
-PS2 analog colors on your PC, simple as one two three. 
+PS2 analog colors on your PC, simple as one-two-three.
 
 Demonstation: 
 
@@ -132,7 +130,7 @@ Demonstation:
 
 # MSAA and MSAA RW support  
 
-What is anti-aliasing is known to pretty much everyone, let's not talk about it much and get straight to the MSAA RW support. 
+What is [anti-aliasing](https://en.wikipedia.org/wiki/Spatial_anti-aliasing) is known to pretty much everyone, let's not talk about it much and get straight to the MSAA RW support. 
 
 The problem is that Nvidia drivers are broken in regard of anti-aliasing and you may suffer from black screen or other graphical corruptions. This option is the solution for this problem, it adds full MSAA support to RenderWare, thus solves the problems of Nvidia GPU drivers. A bit performance consuming so bare that in mind. 
 
