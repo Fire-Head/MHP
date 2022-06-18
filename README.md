@@ -43,7 +43,8 @@ PS2 has smarter RenderWare, it itself is able to zero the render states after re
 
 The plugin simply turns off the texture before drawing the wire sphere, which simulates PS2 behavior. 
 
-![PS2 halos](https://user-images.githubusercontent.com/26774830/124336203-c9ffbf80-dba5-11eb-93bd-4715c4f6d42e.png)
+![PS2 Halos](https://user-images.githubusercontent.com/26774830/174457720-e351a7c9-8f32-4835-8307-295000760593.png)
+
 
 # Usable objects highlighting fix 
 
@@ -73,7 +74,8 @@ Replaces the dual texture render with a new one which is done via shaders copyin
 
 Note: This option is related to the PS2 player damage.
 
-![PS2 Matfx Dual Pass](https://user-images.githubusercontent.com/26774830/167521186-0b7f72c3-51b7-4142-b6b8-731a8725c3c4.png)
+![PS2 Matfx Dual Pass](https://user-images.githubusercontent.com/26774830/174457748-631b4859-bf44-40cf-b7b5-b84fb5410531.png)
+
 
 
 # PS2 Player Damage  
