@@ -136,6 +136,14 @@ The problem is that Nvidia drivers are broken in regard of anti-aliasing and you
 
 Note for ATI GPU users: This option is not needed thank to the driver developers, so leave it off.  
 
+# Display
+
+Video mode got improvements and QoL changes like windowed/borderless mode with multi-monitor support or proper cursor lock.
+Besides, any windowed mode now can be placed and sized manually in the config.
+
+![videomode](https://github.com/Fire-Head/MHP/assets/26774830/3c7ff1f0-8cb6-4698-9cca-73346698e24f)
+
+
 # Special Thanks
 * aap - for providing his PS2 EnvMap pipeline and helping with PS2 RenderWare research.
 * ermaccer - for making [video](https://www.youtube.com/watch?v=C8XR1K14h8A) about the plugin.
