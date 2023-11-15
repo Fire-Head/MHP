@@ -12,13 +12,23 @@ CIni::~CIni(void)
 {
 }
 
+const char *CIni::ToA(int value)
+{
+	_itoa_s(value,tempBuffer,10);
+	return tempBuffer;
+}
+
 int CIni::Get(char *section, char *key, int defaultValue)
 {
 	return GetPrivateProfileInt(section,  key, defaultValue, m_szPath); 
 }
 
+void CIni::Set(char *section, char *key, const char *value)
+{
+	WritePrivateProfileString(section, key, value, m_szPath);
+}
+
 void CIni::Set(char *section, char *key, int value)
 {
-	_itoa_s(value,tempBuffer,10);
-	WritePrivateProfileString(section, key, tempBuffer, m_szPath);
+	Set(section, key, ToA(value));
 }

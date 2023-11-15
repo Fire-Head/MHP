@@ -388,3 +388,5 @@ RwBool _rwD3D8Im2DRenderPrimitive(RwPrimitiveType primType, RwIm2DVertex *verts,
 
 RwBool _rwD3D8RGBToPixel(void *pixel, void *col, RwInt32 format);
 RwBool _rwD3D8PixelToRGB(void *rgb, void *pixel, RwInt32 format);
+
+void RwD3D8EngineSetRefreshRate(RwUInt32 refreshRate);

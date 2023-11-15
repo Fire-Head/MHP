@@ -29,12 +29,13 @@ void Settings::FillMenu()
 
 	DebugMenuAddVarBool32(MENUROOT, "YCbCr", &bScreenFilter, NULL);
 	DebugMenuAddVarBool32(MENUROOT, "PS2 Alpha Test", &bPS2AlphaTest, NULL);
-	DebugMenuAddVarBool32(MENUROOT, "New Render", &bNewRender, NULL);
-	DebugMenuAddVarBool32(MENUROOT, "PS2 MatFx Env", &bMatFxEnv, NULL);
-	DebugMenuAddVarBool32(MENUROOT, "PS2 MatFx DualPass", &bMatFxDualPass, NULL);
+	DebugMenuAddVarBool32(MENUROOT, "New Renderer", &bNewRender, NULL);
+	DebugMenuAddVarBool32(MENUROOT, "PS2 MatFX Env", &bMatFxEnv, NULL);
+	DebugMenuAddVarBool32(MENUROOT, "PS2 MatFX DualPass", &bMatFxDualPass, NULL);
 	DebugMenuAddVarBool32(MENUROOT, "Fix Halos", &bFixHalos, NULL);
 	DebugMenuAddVarBool32(MENUROOT, "Old Halos", &bOldHalosStyle, NULL);
 	DebugMenuAddVarBool32(MENUROOT, "UseableLight Fix", &bUseableLightFix, NULL);
+	DebugMenuAddVarBool32(MENUROOT, "Skin Fallback Fix", &bSkinFallbackFix, NULL);
 
 	DebugMenuAddVarBool32(MENUROOT"|MSAA", "MSAA", &bEnableMSAA, NULL);
 	DebugMenuAddVarBool32(MENUROOT"|MSAA", "RW MSAA Support", &bRwMSAASupport, NULL);
@@ -89,6 +90,16 @@ void Settings::Reset()
 	bPS2Damage=1;
 	bPS2CameraFX=1;
 	bCrosshairFix=1;
+	bSkinFallbackFix=1;
+	bLockAtVSync=0;
+	bHide16bitResolution=1;
+	nWindowPositionX=INT_MAX;
+	nWindowPositionY=INT_MAX;
+	bAlwaysOnTop=0;
+	nWindowedWidth=640;
+	nWindowedHeight=480;
+	nBorderlessWindowedWidth=INT_MAX;
+	nBorderlessWindowedHeight=INT_MAX;
 #if 0
 	bNewLight=0;
 	bL1=1;
@@ -125,48 +136,83 @@ void Settings::Load()
 {
 	CIni ini;
 
-	bScreenFilter            = ini.Get("Main", "bYCbCrColorFilter", bScreenFilter);
-	bPS2AlphaTest            = ini.Get("Main", "bPS2AlphaTest", bPS2AlphaTest);
-	bNewRender               = ini.Get("Main", "bNewRender", bNewRender);
-	bMatFxEnv                = ini.Get("Main", "bPS2MatfxEnv", bMatFxEnv);
-	bMatFxDualPass           = ini.Get("Main", "bPS2MatfxDualPass", bMatFxDualPass);
+#define CURSECTION "Main"
+	bScreenFilter				= ini.Get(CURSECTION, "bYCbCrColorFilter", bScreenFilter);
+	bPS2AlphaTest				= ini.Get(CURSECTION, "bPS2AlphaTest", bPS2AlphaTest);
+	bNewRender					= ini.Get(CURSECTION, "bNewRenderer", bNewRender);
+	bMatFxEnv					= ini.Get(CURSECTION, "bPS2MatFXEnv", bMatFxEnv);
+	bMatFxDualPass				= ini.Get(CURSECTION, "bPS2MatFXDualPass", bMatFxDualPass);
+	bFixHalos					= ini.Get(CURSECTION, "bFixHalos", bFixHalos);
+	bOldHalosStyle				= ini.Get(CURSECTION, "bOldHalos", bOldHalosStyle);
+	bUseableLightFix			= ini.Get(CURSECTION, "bUseableLight", bUseableLightFix);
+	bPS2Brightness				= ini.Get(CURSECTION, "bPS2Brightness", bPS2Brightness);
+	bPS2Damage					= ini.Get(CURSECTION, "bPS2Damage", bPS2Damage);
+	bPS2CameraFX				= ini.Get(CURSECTION, "bPS2CameraFX", bPS2CameraFX);
+#undef CURSECTION
 
-	bFixHalos                = ini.Get("Main", "bFixHalos", bFixHalos);
-	bOldHalosStyle           = ini.Get("Main", "bOldHalos", bOldHalosStyle);
+#define CURSECTION "Misc"
+	bCrosshairFix				= ini.Get(CURSECTION, "bCrosshairFix", bCrosshairFix);
+	bSkinFallbackFix			= ini.Get(CURSECTION, "bSkinFallbackFix", bSkinFallbackFix);
+#undef CURSECTION
 
-	bUseableLightFix         = ini.Get("Main", "bUseableLight", bUseableLightFix);
+#define CURSECTION "Display"
+	bLockAtVSync				= ini.Get(CURSECTION, "bLockAtVSync", bLockAtVSync);
+	bHide16bitResolution		= ini.Get(CURSECTION, "bHide16bitResolution", bHide16bitResolution);
+	nWindowPositionX			= ini.Get(CURSECTION, "nWindowPositionX", nWindowPositionX);
+	nWindowPositionY			= ini.Get(CURSECTION, "nWindowPositionY", nWindowPositionY);
+	bAlwaysOnTop				= ini.Get(CURSECTION, "bAlwaysOnTop", bAlwaysOnTop);
+	nWindowedWidth				= ini.Get(CURSECTION, "nWindowedWidth", nWindowedWidth);
+	nWindowedHeight				= ini.Get(CURSECTION, "nWindowedHeight", nWindowedHeight);
+	nBorderlessWindowedWidth	= ini.Get(CURSECTION, "nBorderlessWindowedWidth", nBorderlessWindowedWidth);
+	nBorderlessWindowedHeight	= ini.Get(CURSECTION, "nBorderlessWindowedHeight", nBorderlessWindowedHeight);
+#undef CURSECTION
 
-	bRwMSAASupport           = ini.Get("MSAA", "bRwMSAASupport", bRwMSAASupport);
-	nMSAA                    = ini.Get("MSAA", "nMSAA", nMSAA);
-
-	bPS2Brightness           = ini.Get("Other", "bPS2Brightness", bPS2Brightness);
-	bPS2Damage               = ini.Get("Other", "bPS2Damage", bPS2Damage);
-	bPS2CameraFX             = ini.Get("Other", "bPS2CameraFX", bPS2CameraFX);
-
-	bCrosshairFix            = ini.Get("Other", "bCrosshairFix", bCrosshairFix);
+#define CURSECTION "MSAA"
+	bRwMSAASupport				= ini.Get(CURSECTION, "bRwMSAASupport", bRwMSAASupport);
+	nMSAA						= ini.Get(CURSECTION, "nMSAA", nMSAA);
+#undef CURSECTION
 }
 
 void Settings::Save()
 {
 	CIni ini;
 
-	ini.Set("Main", "bYCbCrColorFilter", bScreenFilter);
-	ini.Set("Main", "bPS2AlphaTest", bPS2AlphaTest);
-	ini.Set("Main", "bNewRender", bNewRender);
-	ini.Set("Main", "bPS2MatfxEnv", bMatFxEnv);
-	ini.Set("Main", "bPS2MatfxDualPass", bMatFxDualPass);
+#define CURSECTION "Main"
+	ini.Set(CURSECTION, "bYCbCrColorFilter", bScreenFilter);
+	ini.Set(CURSECTION, "bPS2AlphaTest", bPS2AlphaTest);
+	ini.Set(CURSECTION, "bNewRenderer", bNewRender);
+	ini.Set(CURSECTION, "bPS2MatFXEnv", bMatFxEnv);
+	ini.Set(CURSECTION, "bPS2MatFXDualPass", bMatFxDualPass);
 	
-	ini.Set("Main", "bFixHalos", bFixHalos);
-	ini.Set("Main", "bOldHalos", bOldHalosStyle);
+	ini.Set(CURSECTION, "bFixHalos", bFixHalos);
+	ini.Set(CURSECTION, "bOldHalos", bOldHalosStyle);
 	
-	ini.Set("Main", "bUseableLight", bUseableLightFix);
+	ini.Set(CURSECTION, "bUseableLight", bUseableLightFix);
 
-	ini.Set("MSAA", "bRwMSAASupport", bRwMSAASupport);
-	ini.Set("MSAA", "nMSAA", nMSAA);
-	
-	ini.Set("Other", "bPS2Brightness", bPS2Brightness);
-	ini.Set("Other", "bPS2Damage", bPS2Damage);
-	ini.Set("Other", "bPS2CameraFX", bPS2CameraFX);
+	ini.Set(CURSECTION, "bPS2Brightness", bPS2Brightness);
+	ini.Set(CURSECTION, "bPS2Damage", bPS2Damage);
+	ini.Set(CURSECTION, "bPS2CameraFX", bPS2CameraFX);
+#undef CURSECTION
 
-	ini.Set("Other", "bCrosshairFix", bCrosshairFix);
+#define CURSECTION "Misc"
+	ini.Set(CURSECTION, "bCrosshairFix", bCrosshairFix);
+	ini.Set(CURSECTION, "bSkinFallbackFix", bSkinFallbackFix);
+#undef CURSECTION
+	
+#define CURSECTION "Display"
+	ini.Set(CURSECTION, "bLockAtVSync", bLockAtVSync);
+	ini.Set(CURSECTION, "bHide16bitResolution", bHide16bitResolution);
+	ini.Set(CURSECTION, "nWindowPositionX", nWindowPositionX != INT_MAX ? ini.ToA(nWindowPositionX) : "");
+	ini.Set(CURSECTION, "nWindowPositionY", nWindowPositionY != INT_MAX ? ini.ToA(nWindowPositionY) : "");
+	ini.Set(CURSECTION, "bAlwaysOnTop", bAlwaysOnTop);
+	ini.Set(CURSECTION, "nWindowedWidth", nWindowedWidth);
+	ini.Set(CURSECTION, "nWindowedHeight", nWindowedHeight);
+	ini.Set(CURSECTION, "nBorderlessWindowedWidth", nBorderlessWindowedWidth != INT_MAX ? ini.ToA(nBorderlessWindowedWidth) : "");
+	ini.Set(CURSECTION, "nBorderlessWindowedHeight", nBorderlessWindowedHeight != INT_MAX ? ini.ToA(nBorderlessWindowedHeight) : "");
+#undef CURSECTION
+
+#define CURSECTION "MSAA"
+	ini.Set(CURSECTION, "bRwMSAASupport", bRwMSAASupport);
+	ini.Set(CURSECTION, "nMSAA", nMSAA);
+#undef CURSECTION
 }

@@ -382,7 +382,7 @@ RwBool _fakePalTextureRead(void *streamIn, void *textureIn,
 
 
 	RWSRCGLOBAL(stdFunc[rwSTANDARDRASTERCREATE]) = oldcreate;
-	printf("rasFormat %d %d\n", rasFormat, nativeRaster.type);
+	DBG("rasFormat %d %d\n", rasFormat, nativeRaster.type);
 
     if (!raster)
     {

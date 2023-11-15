@@ -6,6 +6,7 @@ Immediate &CRenderer::ms_im = *(Immediate*)0x7D35A4;
 unsigned int& CGameTime::ms_currGameTime = *(unsigned int*)0x756270;
 int &CScene::ms_stepMode = *(int*)0x715BA0;
 CPlayer* &CScene::ms_pPlayer = *(CPlayer**)0x715B9C;
+RwCamera* &CScene::ms_pCamera = *(RwCamera**)0x715B94;
 RwTexture *(&CCharacterDamageManager::ms_textures)[CCharacterDamageManager::NUM_TEXTURES] = *(RwTexture *(*)[CCharacterDamageManager::NUM_TEXTURES])*(int *)(0x7AE950);
 int &CCharacterDamageManager::ms_iShowPlayerDamageMap = *(int *)0x7AE94C;
 int &CCharacterDamageManager::ms_iUpdatePlayerDamgeMapAlpha = *(int*)0x7AE948;
@@ -16,6 +17,11 @@ int &CFrontend::ms_Nightvision = *(int*)0x7CF0FC;
 int &CFrontend::ms_FXModeFade = *(int*)0x7CF294;
 RwTexture *(&CFrontend::ms_damageTextures)[CCharacterDamageManager::NUM_TEXTURES] = *(RwTexture *(*)[CCharacterDamageManager::NUM_TEXTURES])*(int *)(0x7D3838);
 CScreen &CFrontend::ms_scrn = *(CScreen*)0x7D3440;
+RwCamera* &CFrontend::ms_pCamera = *(RwCamera**)0x7CF078;
+CFrontendMenu::menuMouse &CFrontendMenu::Mouse = *(CFrontendMenu::menuMouse*)0x7C8F70;
+CFrontendMenu::dialogBox &CFrontendMenu::ms_dBox = *(CFrontendMenu::dialogBox*)0x7C8758;
+int &CFrontendMenu::m_menuCurrent = *(int*)0x7C86F8;
+int &CGameInfo::m_gameInfo  = *(int*)0x7C9974;
 CCamGlobals &gCameraGlobals = *(CCamGlobals*)0x7A0FAC;
 
 void CRenderer::SetIngameInfoRenderStates(long mode)
@@ -46,6 +52,11 @@ void CRenderer::RenderStateAlphaSet()
 void CRenderer::RenderStateAlphaCombine_ONE()
 {
 	((void (__cdecl *)())0x5F5EE0)();
+}
+
+void CRenderer::SetAngle(float angle)
+{
+	((void (__cdecl *)(float))0x5F83E0)(angle);
 }
 
 void CRenderer::DrawQuad2dBegin(RwRaster *raster)

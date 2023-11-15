@@ -17,7 +17,6 @@
 #include "shaderloader.h"
 #endif
 
-#pragma comment(linker, "/nodefaultlib:libcmt")
 
 enum
 {

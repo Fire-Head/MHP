@@ -40,6 +40,74 @@ void CUseableFix::RenderLit()
 	CEntity::RenderLit();
 }
 
+void CPedFix::RenderLit()
+{
+	if ( !Settings::GetInstance()->bSkinFallbackFix ) return;
+	
+	if ( m_pSkins[0] )
+	{
+		RpAtomic *atomic = NULL;
+		RpClumpForAllAtomics(m_pClump, GetFirstAtomicCallback, &atomic);
+		RpMaterialSetTexture(RpGeometryGetMaterial(RpAtomicGetGeometry(atomic), 0), m_pSkins[0]);
+	}
+}
+
+void CPedHeadFix::RenderLit()
+{
+	if ( !Settings::GetInstance()->bSkinFallbackFix ) return;
+	
+	if ( m_pSkins[0] )
+	{
+		RpAtomic *atomic = NULL;
+		RpClumpForAllAtomics(m_pClump, GetFirstAtomicCallback, &atomic);
+		RpMaterialSetTexture(RpGeometryGetMaterial(RpAtomicGetGeometry(atomic), 0), m_pSkins[0]);
+	}
+}
+
+void NAK patch_CPed_RenderLit()
+{
+	__asm
+	{
+		cmp     dword ptr [esi+15Ch], 1
+		jbe     loc_4A8B66
+		
+		mov     eax, 4A8B25h
+		jmp     eax
+		
+loc_4A8B66:
+		mov     ecx, ebx
+		call    CPedFix::RenderLit
+		
+		mov     eax, 4A8B66h
+		jmp     eax
+	}
+}
+
+void NAK patch_CPedHead_RenderLit()
+{
+	__asm
+	{
+		cmp     dword ptr [ecx+144h], 1
+		jbe     loc_4F151C
+		mov     edx, [ebx+13Ch]
+		mov     ecx, [edx+7Ch]
+		cmp     dword ptr [ecx+15Ch], 1
+		jbe     loc_4F151C
+		cmp     dword ptr [ebx+1A4h], 0
+		jnz     loc_4F151C
+		
+		mov     eax, 4F14DDh
+		jmp     eax
+
+loc_4F151C:
+		mov     ecx, ebx
+		call    CPedHeadFix::RenderLit
+		
+		mov     eax, 4F151Ch
+		jmp     eax
+	}
+}
+
 void patch_DrawQuad3d()
 {
 	if ( !Settings::GetInstance()->bFixHalos ) return;
@@ -72,32 +140,6 @@ loc_45F2E4:
 	}
 }
 
-void NAK patch_centermouse()
-{
-	__asm
-	{
-		test    al, al
-		jnz     loc_4C1890
-
-		mov     eax, dword ptr ds: [7D2E28h] // gameIsRunning
-		test    al, al
-		jz      loc_4C1890
-
-		mov     eax, dword ptr ds: [715BA0h] // ms_stepMode
-		test    al, al
-		jnz     loc_4C1890
-
-		mov     ecx, dword ptr ds: [736DB8h]
-
-		mov     eax, 4C185Ch
-		jmp     eax
-
-loc_4C1890:
-		mov     eax, 4C1890h
-		jmp     eax
-	}
-}
-
 STARTPATCH
 	{
 		DBG("Misc\n");
@@ -114,6 +156,10 @@ STARTPATCH
 		CPatch::SetPointer(0x738860, FUNC2PTR(&CUseableFix::RenderLit));
 		CPatch::SetPointer(0x738EEC, FUNC2PTR(&CUseableFix::RenderLit));
 		CPatch::SetPointer(0x739254, FUNC2PTR(&CUseableFix::RenderLit));
+		
+		// skin fallback fix
+		CPatch::RedirectJump(0x4A8B1C, patch_CPed_RenderLit);
+		CPatch::RedirectJump(0x4F14B9, patch_CPedHead_RenderLit);
 
 		if ( Settings::GetInstance()->bPS2Brightness )
 		{
@@ -130,39 +176,5 @@ STARTPATCH
 		// sniper rifle scope fix
 		if ( Settings::GetInstance()->bCrosshairFix )
 			CPatch::RedirectJump(0x45F2BA, patch_crosshair);
-
-#ifdef ADDWINDOWEDMODE
-		{
-			// allow windowed mode
-			CPatch::Nop(0x4BEE85, 6);
-
-			// don't center mouse when in-menu
-			CPatch::RedirectJump(0x4C1852, patch_centermouse);
-		}
-#endif
-
-		// use resolution from bink file
-		{
-			unsigned char push_width_ebx[]  =  { 0xFF, 0x73, 0x00 };   // push    dword ptr [ebx+0]
-			unsigned char push_height_ebx[] =  { 0xFF, 0x73, 0x04 };   // push    dword ptr [ebx+4]
-
-			unsigned char push_width_ebp[]  =  { 0xFF, 0x75, 0x00 };   // push    dword ptr [ebp+0]
-			unsigned char push_height_ebp[] =  { 0xFF, 0x75, 0x04 };   // push    dword ptr [ebp+4]
-
-			CPatch::Nop(0x4C0D2F, 5);
-			CPatch::Set(0x4C0D2F, push_width_ebx, sizeof(push_width_ebx));
-
-			CPatch::Nop(0x4C0D2A, 5);
-			CPatch::Set(0x4C0D2A, push_height_ebx, sizeof(push_height_ebx));
-
-			CPatch::Nop(0x4C0ECA, 5);
-			CPatch::Set(0x4C0ECA, push_width_ebp, sizeof(push_width_ebp));
-
-			CPatch::Nop(0x4C0EC5, 5);
-			CPatch::Set(0x4C0EC5, push_height_ebp, sizeof(push_height_ebp));
-
-			CPatch::Nop(0x4C0ED7, 5);
-			CPatch::Set(0x4C0ED7, push_height_ebp, sizeof(push_height_ebp));
-		}
 	}
 ENDPATCH

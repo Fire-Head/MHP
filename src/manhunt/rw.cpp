@@ -59,6 +59,7 @@ NAK RwCamera *RwCameraBeginUpdate(RwCamera * camera) { EAXJMP(0x6260E0); }
 NAK RwCamera *RwCameraClear(RwCamera *camera, RwRGBA *colour, RwInt32 clearMode) { EAXJMP(0x626290); }
 NAK RwCamera *RwCameraEndUpdate(RwCamera * camera) { EAXJMP(0x6260D0); }
 NAK RwCamera *RwCameraSetViewWindow(RwCamera *camera, const RwV2d *viewWindow)  { EAXJMP(0x626360); }
+NAK RwCamera *RwCameraShowRaster(RwCamera * camera, void *pDev, RwUInt32 flags) { EAXJMP(0x6262C0); }
 NAK RwRaster *RwRasterCreate(RwInt32 width, RwInt32 height, RwInt32 depth, RwInt32 flags) { EAXJMP(0x63CED0); }
 NAK RwBool RwRasterDestroy(RwRaster * raster) { EAXJMP(0x63CCC0); }
 NAK RwRaster *RwRasterUnlockPalette(RwRaster * raster) { EAXJMP(0x63CC90); }
@@ -107,6 +108,7 @@ NAK RwMatrix *RwMatrixMultiply(RwMatrix * matrixOut, const RwMatrix * MatrixIn1,
 NAK RwMatrix *RwMatrixInvert(RwMatrix * matrixOut, const RwMatrix * matrixIn) { EAXJMP(0x619880); }
 NAK RwMatrix *RwMatrixOrthoNormalize(RwMatrix * matrixOut, const RwMatrix * matrixIn) { EAXJMP(0x619130); }
 NAK RwMatrix *RwMatrixOptimize(RwMatrix * matrix, const RwMatrixTolerance *tolerance) { EAXJMP(0x618FF0); }
+NAK RpMaterial *RpMaterialSetTexture(RpMaterial *material, RwTexture *texture)  { EAXJMP(0x63D3F0); }
 NAK RwReal _rwInvSqrt(const RwReal num)  { EAXJMP(0x615500); }
 NAK RwMatrix *RwFrameGetLTM(RwFrame * frame) { EAXJMP(0x6184C0); }
 NAK RwFreeList *RwFreeListCreate(RwInt32 entrySize, RwInt32 entriesPerBlock, RwInt32 alignment, RwUInt32 hint) { EAXJMP(0x610D10); }
@@ -117,6 +119,14 @@ NAK RwBool RwD3D8CreatePixelShader(const RwUInt32 *function, RwUInt32 *handle) {
 NAK void RwD3D8DeletePixelShader(RwUInt32 handle) { EAXJMP(0x643D40); }
 NAK RwBool RwD3D8SetPixelShaderConstant(RwUInt32 registerAddress, const void *constantData, RwUInt32  constantCount) { EAXJMP(0x643DB0); }
 NAK RwInt32 RwEngineRegisterPlugin(RwInt32 size, RwUInt32 pluginID, RwPluginObjectConstructor initCB, RwPluginObjectDestructor termCB) { EAXJMP(0x6125D0); }
+NAK RwBool RwEngineSetVideoMode(RwInt32 modeIndex) { EAXJMP(0x612770); }
+NAK RwVideoMode *RwEngineGetVideoModeInfo(RwVideoMode *modeinfo, RwInt32 modeIndex) { EAXJMP(0x612710); }
+NAK RwInt32 RwEngineGetCurrentVideoMode(void) { EAXJMP(0x612740); }
+NAK RwInt32 RwEngineGetNumVideoModes(void) { EAXJMP(0x6126E0); }
+NAK RwBool RwEngineSetSubSystem(RwInt32 subSystemIndex) { EAXJMP(0x6126B0); }
+NAK RwInt32 RwEngineGetCurrentSubSystem(void) { EAXJMP(0x612680); }
+NAK RwSubSystemInfo *RwEngineGetSubSystemInfo(RwSubSystemInfo *subSystemInfo, RwInt32 subSystemIndex) { EAXJMP(0x612650); }
+NAK RwInt32 RwEngineGetNumSubSystems(void) { EAXJMP(0x612620); }
 NAK const void *RwD3D8GetCaps(void) { EAXJMP(0x643DE0); }
 NAK void RwD3D8GetTransform(RwUInt32 state, void *matrix) { EAXJMP(0x643470); }
 NAK RwBool D3D8AtomicDefaultInstanceCallback(void *object, RxD3D8InstanceData *instancedData, RwBool reinstance) { EAXJMP(0x669B00); }
@@ -160,7 +170,12 @@ NAK RwBool _rwD3D8RWSetRenderState(RwRenderState nState, void *pParam) { EAXJMP(
 NAK RwBool _rwD3D8Im2DRenderPrimitive(RwPrimitiveType primType, RwIm2DVertex *verts, RwInt32 numVerts) { EAXJMP(0x659AD0); }
 NAK RwBool _rwD3D8RGBToPixel(void *pixel, void *col, RwInt32 format) { EAXJMP(0x65FE80); }
 NAK RwBool _rwD3D8PixelToRGB(void *rgb, void *pixel, RwInt32 format) { EAXJMP(0x6600D0); }
-
+NAK void RwD3D8EngineSetRefreshRate(RwUInt32 refreshRate) { EAXJMP(0x641990); }
+NAK RwImage *RwImageCreate(RwInt32 width, RwInt32 height, RwInt32 depth) { EAXJMP(0x62DD10); }
+NAK RwBool RwImageDestroy(RwImage * image) { EAXJMP(0x62DD70); }
+NAK RwImage *RwImageAllocatePixels(RwImage * image) { EAXJMP(0x62DDD0); }
+NAK RwImage *RwImageSetFromRaster(RwImage *image, RwRaster *raster)  { EAXJMP(0x62F160); }
+								  
 RwBool
 RwD3D8SetVertexShaderConstant(RwUInt32 registerAddress,
                               const void *constantData,

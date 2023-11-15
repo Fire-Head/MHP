@@ -20,6 +20,17 @@ public:
 	int bPS2Damage;
 	int bPS2CameraFX;
 	int bCrosshairFix;
+	int bSkinFallbackFix;
+
+	int bLockAtVSync;
+	int bHide16bitResolution;
+	int nWindowPositionX;
+	int nWindowPositionY;
+	int bAlwaysOnTop;
+	int nWindowedWidth;
+	int nWindowedHeight;
+	int nBorderlessWindowedWidth;
+	int nBorderlessWindowedHeight;
 #if 0
 	int bNewLight;
 

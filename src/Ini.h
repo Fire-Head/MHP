@@ -7,8 +7,11 @@ class CIni
 public:
 	CIni(void);
 	~CIni(void);
-
+	
+	const char *ToA(int value);
+	
 	int Get(char *section, char *key, int defaultValue);
+	void Set(char *section, char *key, const char *value);
 	void Set(char *section, char *key, int value);
 };
 

@@ -179,6 +179,7 @@ public:
 	static void PushAndSetRenderState(RwRenderState state, void *value);
 	static void RenderStateAlphaSet();
 	static void RenderStateAlphaCombine_ONE();
+	static void SetAngle(float angle);
 	static void DrawQuad2dBegin(RwRaster *raster);
 	static void DrawQuad2dEnd();
 	static void DrawQuad2d(float posx, float posy, float scalex, float scaley, long R, long G, long B, long A, RwRaster *raster);
@@ -233,6 +234,8 @@ public:
 char _unk5[0x10];
 	RwTexture *m_pDamageTex;
 	unsigned char m_aAlphaPalette[256];
+char _unk6[0x140];
+	RwTexture *m_pSkins[4];
 };
 
 class CPlayer : public CPed
@@ -241,11 +244,19 @@ public:
 
 };
 
+class CPedHead : public CEntity
+{
+public:
+char _unk5[0x8C];
+	RwTexture *m_pSkins[4];
+};
+
 class CScene
 {
 public:
 	static int &ms_stepMode;
 	static CPlayer* &ms_pPlayer;
+	static RwCamera* &ms_pCamera;
 };
 
 class CCharacterDamageManager
@@ -293,8 +304,71 @@ public:
 	static int &ms_FXModeFade;
 	static RwTexture *(&ms_damageTextures)[CCharacterDamageManager::NUM_TEXTURES];
 	static CScreen &ms_scrn;
+	static RwCamera* &ms_pCamera;
 
 	static bool IsCameraFXActive();
+};
+
+class CFrontendMenu
+{
+public:	
+	struct menuMouse
+	{
+		int field_0;
+		int bSaveGameSel;
+		int bDBoxSelectOnClickInput;
+		int nControlsSliderID;
+		int bOption;
+		int bMouseUpdated;
+		int bSliderMinusSel;
+		int bSliderPlusSel;
+		int bLeftOnClickInput;
+		int bRightOnClickInput;
+		int bPrintfInfo;
+		int bPrintInfoButton1Input;
+		int bPrintInfoButton2Input;
+		int nLastOptionSel;
+		int nLastSubOptionSel;
+		int nOptionSel;
+		int nSubOptionSel;
+		int bOptionSel;
+		int nLastIconSel;
+		int nIconSel;
+		float fPointerX;
+		float fPointerY;
+		float fPointerSizeX;
+		float fPointerSizeY;
+		float fX;
+		float fY;
+		int bLMB;
+		int bMMB;
+		int bRMB;
+		int bLMBOnce;
+	};
+	
+	struct dialogBox
+	{
+		int enabled;
+		int draw;
+		int select;
+		int field_C;
+		wchar_t *text;
+		wchar_t *option1;
+		wchar_t *option2;
+		int optionID;
+		int positiveID;
+	};
+
+
+	static menuMouse &Mouse;
+	static dialogBox &ms_dBox;
+	static int &m_menuCurrent;
+};
+
+class CGameInfo
+{
+public:
+	static int &m_gameInfo;
 };
 
 class CCamGlobals
