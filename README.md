@@ -9,8 +9,8 @@ MHPatches is a plugin that brings some of PS2 graphics and features of Manhunt t
 
 # Requirements
 
-* UAL (https://github.com/ThirteenAG/Ultimate-ASI-Loader)
-* debugmenu.dll (optional) (https://github.com/Fire-Head/debugmenu_mh)
+* [UAL](https://github.com/ThirteenAG/Ultimate-ASI-Loader)
+* [debugmenu.dll](https://github.com/Fire-Head/debugmenu_mh) (optional)
 
 # PS2 Alpha Test 
 
