@@ -141,7 +141,7 @@ Note for ATI GPU users: This option is not needed thank to the driver developers
 Video mode got improvements and QoL changes like windowed/borderless mode with multi-monitor support or proper cursor lock.
 Besides, any windowed mode now can be placed and sized manually in the config.
 
-![videomode](https://github.com/Fire-Head/MHP/assets/26774830/3c7ff1f0-8cb6-4698-9cca-73346698e24f)
+![VideoMode](https://github.com/Fire-Head/MHP/assets/26774830/889b06f4-7a2d-4abf-94d1-f3f274f86dfb)
 
 
 # Special Thanks
