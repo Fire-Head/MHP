@@ -61,6 +61,12 @@ Demonstation:
 
 ![Crosshair Fix](https://user-images.githubusercontent.com/26774830/167521073-81e4fc1a-90d3-4b6b-9332-af7a9c2a7d7d.gif)
 
+# Skin Fallback Fix
+The game doesn't remember the default texture when using a randomized skin, as result characters without randomized look will use a texture that was picked last time for that model.
+However, cases of using the same dff for several characters with and without randomized skin at the same time are quite rare in the game, and the only known one is [Cerberus Soldiers/Cerberus Leader](https://www.youtube.com/watch?v=9eA-QAMVXtY).
+
+The fix sets default texture to model if there no random is used.
+
 # EnvMap
 
 Learn more about environment mapping and why it is different on all platforms [here](http://gta.rockstarvision.com/skygfx/skygfx.html#VCvehicle). 
