@@ -48,7 +48,8 @@ void CPedFix::RenderLit()
 	{
 		RpAtomic *atomic = NULL;
 		RpClumpForAllAtomics(m_pClump, GetFirstAtomicCallback, &atomic);
-		RpMaterialSetTexture(RpGeometryGetMaterial(RpAtomicGetGeometry(atomic), 0), m_pSkins[0]);
+		if ( RpGeometryGetNumMaterials(RpAtomicGetGeometry(atomic)) == 1 )
+			RpMaterialSetTexture(RpGeometryGetMaterial(RpAtomicGetGeometry(atomic), 0), m_pSkins[0]);
 	}
 }
 
@@ -60,7 +61,8 @@ void CPedHeadFix::RenderLit()
 	{
 		RpAtomic *atomic = NULL;
 		RpClumpForAllAtomics(m_pClump, GetFirstAtomicCallback, &atomic);
-		RpMaterialSetTexture(RpGeometryGetMaterial(RpAtomicGetGeometry(atomic), 0), m_pSkins[0]);
+		if ( RpGeometryGetNumMaterials(RpAtomicGetGeometry(atomic)) == 1 )
+			RpMaterialSetTexture(RpGeometryGetMaterial(RpAtomicGetGeometry(atomic), 0), m_pSkins[0]);
 	}
 }
 
